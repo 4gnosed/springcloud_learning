@@ -1,0 +1,17 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: eureka-server
+  security: #配置SpringSecurity登录用户名和密码
+    user:
+      name: server1
+      password: 123456
+eureka:
+  instance:
+    hostname: replica1
+  client:
+    serviceUrl:
+      defaultZone: http://server2:123456@replica2:9003/eureka/ #注册到另一个Eureka注册中心
+    fetch-registry: true
+    register-with-eureka: true
