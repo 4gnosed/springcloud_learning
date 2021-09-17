@@ -6,6 +6,7 @@ import com.macro.cloud.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private Environment env;
 
     @PostMapping("/create")
     public CommonResult create(@RequestBody User user) {
@@ -34,6 +37,16 @@ public class UserController {
     @GetMapping("/{id}")
     public CommonResult<User> getUser(@PathVariable Long id) {
         User user = userService.getUser(id);
+        //如果调用9103端口的实例，则睡5秒，用于实验ribbon重试机制
+        String port = env.getProperty("server.port");
+        LOGGER.info("spring.profiles.port: "+port);
+        if("9103".equals(port)){
+            try {
+                Thread.sleep(2000);
+            }catch (InterruptedException e){
+                LOGGER.error("",e);
+            }
+        }
         LOGGER.info("根据id获取用户信息，用户名称为：{}",user.getUsername());
         return new CommonResult<>(user);
     }

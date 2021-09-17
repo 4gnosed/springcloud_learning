@@ -13,3 +13,12 @@ eureka:
       defaultZone: http://server1:123456@localhost:9002/eureka/,http://server2:123456@localhost:9003/eureka/ ##同时注册到两个注册中心
 remote-url:
   user-service: http://user-service
+#指定服务的负载均衡配置
+user-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #从提供服务的实例中以随机的方式
+    ConnectTimeout: 200 #服务请求连接超时时间（毫秒）
+    ReadTimeout: 100 #服务请求处理超时时间（毫秒）
+    OkToRetryOnAllOperations: true #对超时请求启用重试机制
+    MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次server
+    MaxAutoRetries: 0 #同一台实例最大重试次数,不包括首次调用
