@@ -26,20 +26,22 @@ public class UserController {
     private RestTemplate restTemplate;
     @Value("${remote-url.user-service}")
     private String userServiceUrl;
+    @Value("${remote-url.transfer-service}")
+    private String transferServiceUrl;  //调用user-service服务
 
     @GetMapping("/{id}")
     public CommonResult getUser(@PathVariable Long id) {
-        return restTemplate.getForObject(userServiceUrl + "/user/{1}", CommonResult.class, id);
+        return restTemplate.getForObject(transferServiceUrl + "/user/{1}", CommonResult.class, id);
     }
 
     @GetMapping("/getByUsername")
     public CommonResult getByUsername(@RequestParam String username) {
-        return restTemplate.getForObject(userServiceUrl + "/user/getByUsername?username={1}", CommonResult.class, username);
+        return restTemplate.getForObject(transferServiceUrl + "/user/getByUsername?username={1}", CommonResult.class, username);
     }
 
     @GetMapping("/getEntityByUsername")
     public CommonResult getEntityByUsername(@RequestParam String username) {
-        ResponseEntity<CommonResult> entity = restTemplate.getForEntity(userServiceUrl + "/user/getByUsername?username={1}", CommonResult.class, username);
+        ResponseEntity<CommonResult> entity = restTemplate.getForEntity(transferServiceUrl + "/user/getByUsername?username={1}", CommonResult.class, username);
         if (entity.getStatusCode().is2xxSuccessful()) {
             return entity.getBody();
         } else {
@@ -49,16 +51,16 @@ public class UserController {
 
     @PostMapping("/create")
     public CommonResult create(@RequestBody User user) {
-        return restTemplate.postForObject(userServiceUrl + "/user/create", user, CommonResult.class);
+        return restTemplate.postForObject(transferServiceUrl + "/user/create", user, CommonResult.class);
     }
 
     @PostMapping("/update")
     public CommonResult update(@RequestBody User user) {
-        return restTemplate.postForObject(userServiceUrl + "/user/update", user, CommonResult.class);
+        return restTemplate.postForObject(transferServiceUrl + "/user/update", user, CommonResult.class);
     }
 
     @PostMapping("/delete/{id}")
     public CommonResult delete(@PathVariable Long id) {
-        return restTemplate.postForObject(userServiceUrl + "/user/delete/{1}", null, CommonResult.class, id);
+        return restTemplate.postForObject(transferServiceUrl + "/user/delete/{1}", null, CommonResult.class, id);
     }
 }

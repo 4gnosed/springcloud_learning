@@ -1,8 +1,8 @@
 server:
-  port: 9102 #指定运行端口
+  port: 9104 #指定运行端口
 spring:
   application:
-    name: ribbon-service #指定服务名称
+    name: transfer-service #指定服务名称
 eureka:
   client:
     fetch-registry: true #指定是否要从注册中心获取服务（注册中心不需要开启）
@@ -10,24 +10,15 @@ eureka:
     service-url:
 #      defaultZone: http://localhost:9001/eureka/ #配置注册中心地址
       #http://${username}:${password}@${hostname}:${port}/eureka/
-      defaultZone: http://server1:123456@localhost:9002/eureka/,http://server2:123456@localhost:9003/eureka/ ##同时注册到两个注册中心
+      defaultZone: http://server1:123456@localhost:9002/eureka/,http://server2:123456@localhost:9003/eureka/ ##同时注册到两个注册中
 remote-url:
   user-service: http://user-service
-  transfer-service: http://transfer-service
 #指定服务的负载均衡配置
 user-service:
   ribbon:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #从提供服务的实例中以随机的方式
     ConnectTimeout: 200 #服务请求连接超时时间（毫秒）
     ReadTimeout: 100 #服务请求处理超时时间（毫秒）
-    OkToRetryOnAllOperations: true #对超时请求启用重试机制
-    MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次server
-    MaxAutoRetries: 0 #同一台实例最大重试次数,不包括首次调
-transfer-service:
-  ribbon:
-    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #从提供服务的实例中以随机的方式
-    ConnectTimeout: 200 #服务请求连接超时时间（毫秒）
-    ReadTimeout: 200 #服务请求处理超时时间（毫秒）
     OkToRetryOnAllOperations: true #对超时请求启用重试机制
     MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次server
     MaxAutoRetries: 0 #同一台实例最大重试次数,不包括首次调用
