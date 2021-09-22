@@ -22,3 +22,8 @@ user-service:
     OkToRetryOnAllOperations: true #对超时请求启用重试机制
     MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次server
     MaxAutoRetries: 0 #同一台实例最大重试次数,不包括首次调用
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'hystrix.stream' #暴露hystrix监控端点
