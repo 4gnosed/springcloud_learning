@@ -1,0 +1,26 @@
+server:
+  port: 9999 #指定运行端口
+spring:
+  application:
+    name: config-center #指定服务名称
+  security: #配置用户名和密码
+    user:
+      name: configUserName
+      password: pwd
+  cloud:
+    config:
+      server:
+        git: #配置存储配置信息的Git仓库
+          uri: https://gitee.com/macrozheng/springcloud-config.git
+          username: macro
+          password: 123456
+          clone-on-start: true #开启启动时直接从git获取配置
+          search-paths: '{application}' #获取子目录下的配置,application代表应用名称，默认为配置文件中的spring.application.name，如果配置了spring.cloud.config.name，则为该名称
+eureka:
+  client:
+    fetch-registry: true #指定是否要从注册中心获取服务（注册中心不需要开启）
+    register-with-eureka: true #指定是否要注册到注册中心（注册中心不需要开启）
+    service-url:
+#      defaultZone: http://localhost:9001/eureka/ #配置注册中心地址
+      #http://${username}:${password}@${hostname}:${port}/eureka/
+      defaultZone: http://server1:123456@localhost:9002/eureka/,http://server2:123456@localhost:9003/eureka/ ##同时注册到两个注册中心

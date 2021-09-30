@@ -1,0 +1,30 @@
+server:
+  port: 9101 #指定运行端口
+spring:
+  application:
+    name: user-service #指定服务名称
+  cloud:
+    config: #Config客户端配置
+      profile: dev #启用配置后缀名称
+      label: dev #分支名称
+      name: config #配置文件名称
+      username: configUserName
+      password: pwd
+      #      uri: http://localhost:9999 #配置中心地址，配置中心单实例部署
+      #从注册中心获取配置中心地址，配置中心集群部署
+      discovery:
+        enabled: true
+        service-id: config-center
+eureka:
+  client:
+    fetch-registry: true #指定是否要从注册中心获取服务（注册中心不需要开启）
+    register-with-eureka: true #指定是否要注册到注册中心（注册中心不需要开启）
+    service-url:
+#      defaultZone: http://localhost:9001/eureka/ #配置注册中心地址
+      #http://${username}:${password}@${hostname}:${port}/eureka/
+      defaultZone: http://server1:123456@localhost:9002/eureka/,http://server2:123456@localhost:9003/eureka/ ##同时注册到两个注册中心
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'refresh'
